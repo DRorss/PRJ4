@@ -5,6 +5,8 @@ import ForgotPasswordComponent from "./containers/forgotpassword/forgotpassword"
 import InfoUserComponent from "./containers/info-user/info-user";
 import HeaderComponent from "./containers/common/header";
 import {AuthProvider} from "./containers/authen/authProvider";
+import ManagementComponentComponent from "./containers/management/management";
+
 const App = () => {
 
   return (
@@ -16,6 +18,8 @@ const App = () => {
             <Route path="/login" element={<LoginComponent />} />
             <Route path="/forgotPassword" element={<ForgotPasswordComponent />} />
             <Route path="/infoUser" element={<InfoUserComponent />} />
+            <Route path="/management" element={<ManagementComponentComponent />} />
+            
           </Route>
         </Routes>
       </BrowserRouter>
