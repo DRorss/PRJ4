@@ -1,0 +1,72 @@
+.seat-selector {
+  padding: 10px 14px;
+  background-color: var(--white);
+
+  // Mobile and Tablet
+  @media (max-width: 1023px) {
+    padding: 8px 12px;
+  }
+
+  // Seat colors
+  .selected {
+    color: var(--white);
+    background-color: #7dc71d;
+  }
+
+  .sold {
+    color: var(--white);
+    background-color: #e11c01;
+  }
+
+  .vip {
+    background-color: var(--primary);
+  }
+
+  .selectable {
+    background-color: #dbdee1;
+  }
+
+  .unavailable {
+    background-color: #0cbfca;
+  }
+
+  &__title {
+    margin-bottom: 10px;
+    font-size: 25px;
+
+    // Mobile and Tablet
+    @media (max-width: 1023px) {
+      font-size: 20px;
+    }
+  }
+
+  &__map {
+    &-wrapper {
+      padding: 24px;
+      background-color: var(--dark-gray);
+    }
+
+    &-grid {
+      margin: 0 auto;
+      width: 460px;
+    }
+  }
+
+  &__screen {
+    height: 7px;
+    width: 70%;
+    margin-bottom: 20px;
+    margin: 20px auto;
+    background-color: var(--primary);
+
+    &-title {
+      text-align: center;
+      margin-bottom: 15px;
+    }
+  }
+
+  &__seat-notes-container {
+    margin-top: 23px;
+    color: var(--white);
+  }
+}

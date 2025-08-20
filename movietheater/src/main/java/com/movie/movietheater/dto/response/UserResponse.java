@@ -12,4 +12,15 @@ public class UserResponse {
     public String email;
     public String fullName;
     public String role;
+    public String password;
+    public boolean enabled;
+
+    public UserResponse(String userName, String email, String fullName, String role) {
+        this.userName = userName;
+        this.email = email;
+        this.fullName = fullName;
+        this.role = role;
+    }
+
+
 }

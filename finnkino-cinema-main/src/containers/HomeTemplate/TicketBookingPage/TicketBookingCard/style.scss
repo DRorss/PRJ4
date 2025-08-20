@@ -1,0 +1,100 @@
+.ticket-booking-card {
+  padding: 16px;
+  color: var(--white);
+  background-color: var(--gray);
+
+  // Mobile
+  @media (max-width: 739px) {
+    padding: 12px;
+  }
+
+  &__media {
+    object-fit: contain;
+    height: 260px;
+    margin: 0 auto;
+    margin-bottom: 16px;
+
+    @media (max-width: 1023px) {
+      object-fit: cover;
+      height: auto;
+      width: 75%;
+    }
+
+    // Mobile
+    @media (max-width: 739px) {
+      width: 80%;
+    }
+  }
+
+  &__content {
+    font-size: 13px;
+    padding: 0;
+  }
+
+  &__movie-name {
+    margin-bottom: 10px;
+    font: {
+      weight: 700;
+      size: 22px;
+    }
+    text-align: center;
+
+    // Mobile
+    @media (max-width: 739px) {
+      font-size: 20px;
+    }
+  }
+
+  &__movie-age-limit-label {
+    font: {
+      size: 11px;
+      weight: 700;
+    }
+    padding: 4px 6px;
+    background-color: var(--primary);
+    color: var(--black);
+  }
+
+  &__movie-age-limit-content {
+    font-size: 11px;
+    color: var(--primary);
+  }
+
+  &__booking-details {
+    padding: 4px 0;
+  }
+
+  &__divider {
+    background-color: var(--light-gray);
+  }
+
+  &__total {
+    font-size: 17px;
+
+    // Mobile
+    @media (max-width: 739px) {
+      font-size: 15px;
+    }
+  }
+
+  &__btn-booking {
+    margin-top: 20px;
+    padding: 8px 32px;
+    font: {
+      size: 15px;
+      weight: 700;
+    }
+    color: var(--black);
+    background-color: var(--primary);
+    border-radius: 0;
+
+    // Mobile
+    @media (max-width: 739px) {
+      font-size: 13px;
+    }
+
+    &:hover {
+      background-color: var(--hover-primary);
+    }
+  }
+}

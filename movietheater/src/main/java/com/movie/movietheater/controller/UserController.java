@@ -36,4 +36,25 @@ public class UserController {
             return ResultResp.error(new ObjectError("Error", ex.getMessage()));
         }
     }
+
+    @GetMapping("/getDetail/{id}")
+    public ResultResp<UserResponse> getInfoUserById(@PathVariable Integer id) {
+        try {
+            return ResultResp.success(userService.getInfoUserById(id));
+        } catch (Exception ex) {
+            return ResultResp.error(new ObjectError("Error", ex.getMessage()));
+        }
+    }
+
+    @GetMapping("/getUser")
+    public ResultResp<UserResponse> getAllUser(@AuthenticationPrincipal UserDetails userDetails,
+                                               @RequestParam String fullName,
+                                               @RequestParam Integer page,
+                                               @RequestParam Integer size) {
+        try {
+            return ResultResp.success(userService.getUserByFullName(fullName, page, size));
+        } catch (Exception ex) {
+            return ResultResp.error(new ObjectError("Error", ex.getMessage()));
+        }
+    }
 }

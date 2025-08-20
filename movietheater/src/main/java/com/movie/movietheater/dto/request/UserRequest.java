@@ -8,9 +8,12 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 public class UserRequest {
+    public String id;
     public String userName;
     public String password;
     public String email;
     public String newPassword;
     public String fullName;
+    public String role;
+    public boolean enabled;
 }

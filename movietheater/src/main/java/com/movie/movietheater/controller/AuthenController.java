@@ -2,6 +2,8 @@ package com.movie.movietheater.controller;
 
 import com.movie.movietheater.config.WebSecurityConfig;
 import com.movie.movietheater.dto.request.AuthenRequest;
+import com.movie.movietheater.dto.request.RegisterRequest;
+import com.movie.movietheater.dto.request.UserRequest;
 import com.movie.movietheater.dto.response.AuthenResponse;
 import com.movie.movietheater.dto.response.CheckValidEmailResponse;
 import com.movie.movietheater.dto.response.UserResponse;
@@ -13,7 +15,9 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -36,7 +40,7 @@ public class AuthenController {
     public ResultResp<AuthenResponse> login(@RequestBody AuthenRequest request) {
         try {
             return ResultResp.success(authenService.login(request));
-        }catch (Exception ex){
+        } catch (Exception ex) {
             return ResultResp.error(new ObjectError("Error", ex.getMessage()));
         }
     }
@@ -45,7 +49,7 @@ public class AuthenController {
     public ResultResp<CheckValidEmailResponse> checkValidEmail(@PathVariable String email) {
         try {
             return ResultResp.success(authenService.checkValidEmail(email));
-        }catch (Exception ex){
+        } catch (Exception ex) {
             return ResultResp.error(new ObjectError("Error", ex.getMessage()));
         }
     }
@@ -55,7 +59,22 @@ public class AuthenController {
         try {
             authenRequest.setNewPassword(webSecurityConfig.passwordEncoder().encode(authenRequest.getNewPassword()));
             return ResultResp.success(authenService.changePasswordByEmail(authenRequest));
-        }catch (Exception ex){
+        } catch (Exception ex) {
+            return ResultResp.error(new ObjectError("Error", ex.getMessage()));
+        }
+    }
+
+    @PostMapping("/createUser")
+    public ResultResp createUser(@RequestBody RegisterRequest registerRequest) throws Exception {
+        registerRequest.setPassword(webSecurityConfig.passwordEncoder().encode(registerRequest.getPassword()));
+        return authenService.createUser(registerRequest);
+    }
+
+    @PostMapping("/updateUser")
+    public ResultResp updateUser(@RequestBody UserRequest userRequest) {
+        try {
+            return ResultResp.success(authenService.updateInfoUser(userRequest));
+        } catch (Exception ex) {
             return ResultResp.error(new ObjectError("Error", ex.getMessage()));
         }
     }

@@ -21,5 +21,4 @@ public class User {
     private String fullName;
     private boolean enabled;
     private String role;
-
 }
