@@ -25,6 +25,10 @@ const movieApi = {
     const url = resourceName + "CapNhatPhimUpload";
     return axiosClient.post(url, formData);
   },
+  updateEnabled: (id) => {
+    const url = resourceName + `/updateEnabled/${id}`;
+    return axiosClient.put(url);
+  },
 };
 
 export default movieApi;

@@ -45,6 +45,7 @@ public class FilmServiceImpl implements FilmService {
         film.setDescription(request.getDesc());
         film.setShowHideFilm(request.getShowHideFilm());
         film.setProductionTime(request.getProductionDate());
+        film.setEnabled(true);
 
         if (request.getImage() != null && !request.getImage().isEmpty()) {
             String fileName = UUID.randomUUID() + "_" + request.getImage().getOriginalFilename();
@@ -84,5 +85,19 @@ public class FilmServiceImpl implements FilmService {
         return filmResponses;
     }
 
+    @Override
+    public boolean updateEnabled(Long id) throws Exception{
+        try{
+            Optional<Film> f = filmRepository.findById(id);
+            if(f.isPresent()){
+                Film film = f.get();
+                film.setEnabled(!film.isEnabled());
+                filmRepository.save(film);
+            }
+        }catch(Exception e){
+            return false;
+        }
+        return true;
+    }
 
 }

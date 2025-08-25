@@ -2,8 +2,10 @@
 import { LoadingButton } from "@mui/lab";
 import { Button, IconButton } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
+import CachedIcon from '@mui/icons-material/Cached';
 import { BorderColor } from "@mui/icons-material";
 import CalendarTodayIcon from "@mui/icons-material/CalendarToday";
+import Tooltip from '@mui/material/Tooltip';
 
 // Scss
 import "./style.scss";
@@ -46,7 +48,9 @@ const EditMovieBtn = (props) => (
 
 const DeleteMovieBtn = (props) => (
   <IconButton color="error" {...props}>
-    <DeleteIcon className="movie-management__btn-icon" />
+    <Tooltip title={props.tooltipLable ? "Mở khóa" : "Khóa"}>
+      <CachedIcon className="movie-management__btn-icon" />
+    </Tooltip>
   </IconButton>
 );
 

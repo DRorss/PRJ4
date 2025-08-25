@@ -54,6 +54,15 @@ public class FilmController {
         }
     }
 
+    @PutMapping("/updateEnabled/{id}")
+    public ResultResp<?> updateEnabled(@PathVariable Long id) {
+        try {
+            return ResultResp.success(filmService.updateEnabled(id));
+        } catch (Exception ex) {
+            return ResultResp.error(new ObjectError("Error", ex.getMessage()));
+        }
+    }
+
     @GetMapping("/getBanner")
     public ResultResp<?> getBanner() {
         try {

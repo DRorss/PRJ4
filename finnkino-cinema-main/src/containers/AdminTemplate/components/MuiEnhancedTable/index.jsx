@@ -211,11 +211,16 @@ function MuiEnhancedTable(props) {
     }
   };
 
-  const handleDeleteItem = async (id) => {
-    const msg =
-      tableType === "user" ? "Bạn có chắc muốn xoá tài khoản " : "Bạn có chắc muốn xoá phim có mã ";
+  const handleDeleteItem = async (id, isEnabled) => {
+    let tempMsg = "";
+    if (tableType === "movie") {
+      tempMsg = isEnabled ? "Bạn có chắc muốn khóa phim?" : "Bạn có chắc muốn mở khóa phim?";
+    } else {
+      tempMsg = isEnabled ? "Bạn có chắc muốn khóa tài khoản?" : "Bạn có chắc muốn mở khóa tài khoản?";
+    }
+    const msg = tempMsg;
 
-    if (window.confirm(msg + id)) {
+    if (window.confirm(msg)) {
       if (tableType === "user") {
         await fetchUserDelete(id);
         window.location.reload();

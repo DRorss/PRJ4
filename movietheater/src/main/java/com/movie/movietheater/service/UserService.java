@@ -19,4 +19,6 @@ public interface UserService {
 
     UserResponse getInfoUserById(Integer id);
 
+    boolean updateEnabled(Long id);
+
 }

@@ -25,5 +25,6 @@ public class Film {
     private String imagePath; // save image filename or path
     private Date createdAt;
     private Date updatedAt;
+    private boolean enabled;
 
 }

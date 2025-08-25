@@ -76,4 +76,18 @@ public class UserServiceImpl implements UserService {
         }
     }
 
+    @Override
+    public boolean updateEnabled(Long id) {
+        try{
+            Optional<User> u = userRepository.findById(id);
+            if(u.isPresent()){
+                User user = u.get();
+                user.setEnabled(!user.isEnabled());
+                userRepository.save(user);
+            }
+        }catch(Exception e){
+            return false;
+        }
+        return true;
+    }
 }

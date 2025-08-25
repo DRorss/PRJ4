@@ -46,7 +46,7 @@ const UserTableCells = (props) => {
         sx={{ width: "150px" }}
         className="management-table__table-cell table-cell__management-actions"
       >
-        {/* <DeleteMovieBtn onClick={() => handleDelete(row.id)} /> */}
+        <DeleteMovieBtn onClick={() => handleDelete(row.id, row.enabled)} tooltipLable={row.enabled ? false : true} />
         <EditMovieBtn onClick={() => handleEdit(row.id)} />
       </TableCell>
     </>

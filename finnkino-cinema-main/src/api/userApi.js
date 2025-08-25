@@ -37,6 +37,11 @@ const userApi = {
     const url = resourceUser + `getDetail/${id}`;
     return axiosClient.get(url);
   },
+  updateEnabled: (id) => {
+    const url = resourceUser + `updateEnabled/${id}`;
+    return axiosClient.put(url);
+  },
+
 };
 
 export default userApi;

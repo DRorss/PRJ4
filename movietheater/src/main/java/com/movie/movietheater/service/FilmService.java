@@ -18,4 +18,6 @@ public interface FilmService {
     FilmResponse getDetail(Integer id) throws Exception;
 
     List<FilmResponse> getFilms() throws Exception;
+    boolean updateEnabled(Long id) throws Exception;
+
 }

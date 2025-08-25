@@ -69,7 +69,7 @@ const headCells = [
 
 const fetchUserDelete = async (userAccount) => {
   try {
-    await userApi.deleteUser(userAccount);
+    await userApi.updateEnabled(userAccount);
   } catch (error) {
     alert(error);
   }
@@ -77,7 +77,7 @@ const fetchUserDelete = async (userAccount) => {
 
 const fetchMovieDelete = async (movieId) => {
   try {
-    await movieApi.deleteMovie(movieId);
+    await movieApi.updateEnabled(movieId);
   } catch (error) {
     alert(error);
   }

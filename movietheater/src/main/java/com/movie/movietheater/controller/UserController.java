@@ -57,4 +57,13 @@ public class UserController {
             return ResultResp.error(new ObjectError("Error", ex.getMessage()));
         }
     }
+
+    @PutMapping("/updateEnabled/{id}")
+    public ResultResp<?> updateEnabled(@PathVariable Long id) {
+        try {
+            return ResultResp.success(userService.updateEnabled(id));
+        } catch (Exception ex) {
+            return ResultResp.error(new ObjectError("Error", ex.getMessage()));
+        }
+    }
 }

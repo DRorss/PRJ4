@@ -58,3 +58,30 @@ ALTER SEQUENCE movie_theater.user_id_seq
 INSERT INTO movie_theater.user(
 	 user_name, password, email, full_name, enabled, role)
 	VALUES ('admin','$2a$10$.iot6V2kegRp6Qow811HYuIAJ6jo383jgdTqSQiHhZUI46mYovZum','drors96@gmail.com','master.D',True,'ADMIN');
+
+-- Table: movie_theater.films
+
+-- DROP TABLE IF EXISTS movie_theater.films;
+
+CREATE TABLE IF NOT EXISTS movie_theater.films
+(
+    id integer NOT NULL DEFAULT nextval('movie_theater.movies_id_seq'::regclass),
+    author character varying COLLATE pg_catalog."default",
+    show_time timestamp without time zone,
+    show_hide_film boolean,
+    image_path character varying COLLATE pg_catalog."default",
+    volumn_film integer,
+    description character varying COLLATE pg_catalog."default",
+    name character varying COLLATE pg_catalog."default" NOT NULL,
+    production_time bigint,
+    type character varying COLLATE pg_catalog."default",
+    created_at timestamp without time zone,
+    updated_at timestamp without time zone,
+    enabled boolean,
+    CONSTRAINT movies_pkey PRIMARY KEY (id)
+)
+
+TABLESPACE pg_default;
+
+ALTER TABLE IF EXISTS movie_theater.films
+    OWNER to postgres;

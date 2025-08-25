@@ -67,10 +67,17 @@ const MovieTableCells = (props) => {
       </TableCell>
       <TableCell
         align="center"
+        sx={{ width: "200px", height: "100px" }}
+        className="movie-table__table-cell table-cell__movie-name"
+      >
+        {row.enabled ? 'Hoạt động' : 'Không hoạt động'}
+      </TableCell>
+      <TableCell
+        align="center"
         sx={{ width: "150px" }}
         className="movie-table__table-cell table-cell__movie-actions"
       >
-        <DeleteMovieBtn onClick={() => handleDelete(row.id)} />
+        <DeleteMovieBtn onClick={() => handleDelete(row.id, row.enabled)} tooltipLable={row.enabled ? false : true} />
         <EditMovieBtn onClick={() => handleEdit(row.id)} />
         {/* <CreateScheduleBtn onClick={() => handleSchedule(row.maPhim)} /> */}
       </TableCell>
