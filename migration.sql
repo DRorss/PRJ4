@@ -59,6 +59,57 @@ INSERT INTO movie_theater.user(
 	 user_name, password, email, full_name, enabled, role)
 	VALUES ('admin','$2a$10$.iot6V2kegRp6Qow811HYuIAJ6jo383jgdTqSQiHhZUI46mYovZum','drors96@gmail.com','master.D',True,'ADMIN');
 
+-- Table: movie_theater.booking_seats
+
+-- DROP TABLE IF EXISTS movie_theater.booking_seats;
+
+CREATE TABLE IF NOT EXISTS movie_theater.booking_seats
+(
+    id bigint NOT NULL DEFAULT nextval('movie_theater.booking_seats_id_seq'::regclass),
+    booking_id bigint NOT NULL,
+    seat_id bigint NOT NULL,
+    seat_price numeric(12,2) NOT NULL,
+    seat_name character varying COLLATE pg_catalog."default",
+    CONSTRAINT booking_seats_pkey PRIMARY KEY (id),
+    CONSTRAINT fk_booking_seats_booking FOREIGN KEY (booking_id)
+        REFERENCES movie_theater.bookings (id) MATCH SIMPLE
+        ON UPDATE NO ACTION
+        ON DELETE CASCADE,
+    CONSTRAINT fk_booking_seats_seat FOREIGN KEY (seat_id)
+        REFERENCES movie_theater.seats (id) MATCH SIMPLE
+        ON UPDATE NO ACTION
+        ON DELETE NO ACTION
+)
+
+TABLESPACE pg_default;
+
+ALTER TABLE IF EXISTS movie_theater.booking_seats
+    OWNER to postgres;
+	
+-- Table: movie_theater.bookings
+
+-- DROP TABLE IF EXISTS movie_theater.bookings;
+
+CREATE TABLE IF NOT EXISTS movie_theater.bookings
+(
+    id bigint NOT NULL DEFAULT nextval('movie_theater.bookings_id_seq'::regclass),
+    user_id bigint NOT NULL,
+    status character varying(20) COLLATE pg_catalog."default" NOT NULL DEFAULT 'PENDING'::character varying,
+    total_price numeric(12,2) NOT NULL DEFAULT 0,
+    created_at timestamp without time zone NOT NULL DEFAULT now(),
+    movie_id bigint,
+    CONSTRAINT bookings_pkey PRIMARY KEY (id),
+    CONSTRAINT fk_bookings_user FOREIGN KEY (user_id)
+        REFERENCES movie_theater."user" (id) MATCH SIMPLE
+        ON UPDATE NO ACTION
+        ON DELETE NO ACTION
+)
+
+TABLESPACE pg_default;
+
+ALTER TABLE IF EXISTS movie_theater.bookings
+    OWNER to postgres;
+	
 -- Table: movie_theater.films
 
 -- DROP TABLE IF EXISTS movie_theater.films;
@@ -78,10 +129,47 @@ CREATE TABLE IF NOT EXISTS movie_theater.films
     created_at timestamp without time zone,
     updated_at timestamp without time zone,
     enabled boolean,
+    youtube_link character varying COLLATE pg_catalog."default",
     CONSTRAINT movies_pkey PRIMARY KEY (id)
 )
 
 TABLESPACE pg_default;
 
 ALTER TABLE IF EXISTS movie_theater.films
+    OWNER to postgres;
+	
+	-- Table: movie_theater.seats
+
+-- DROP TABLE IF EXISTS movie_theater.seats;
+
+CREATE TABLE IF NOT EXISTS movie_theater.seats
+(
+    id integer NOT NULL DEFAULT nextval('movie_theater.seats_id_seq'::regclass),
+    seat_number integer,
+    seat_row character(1) COLLATE pg_catalog."default",
+    type character(1) COLLATE pg_catalog."default",
+    CONSTRAINT seats_pkey PRIMARY KEY (id)
+)
+
+TABLESPACE pg_default;
+
+ALTER TABLE IF EXISTS movie_theater.seats
+    OWNER to postgres;
+	
+	-- Table: movie_theater.seats_movies
+
+-- DROP TABLE IF EXISTS movie_theater.seats_movies;
+
+CREATE TABLE IF NOT EXISTS movie_theater.seats_movies
+(
+    seats_id integer NOT NULL,
+    movie_id integer NOT NULL,
+    is_booked boolean,
+    user_id bigint,
+    price double precision
+)
+
+TABLESPACE pg_default;
+
+ALTER TABLE IF EXISTS movie_theater.seats_movies
     OWNER to postgres;
