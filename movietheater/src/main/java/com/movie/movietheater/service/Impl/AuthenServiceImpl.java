@@ -111,7 +111,7 @@ public class AuthenServiceImpl implements AuthenService {
         if (user.isPresent()) {
             User uEntity = user.get();
             uEntity.setFullName(userRequest.getFullName());
-            if(StringUtils.hasText(userRequest.getPassword())) {
+            if (StringUtils.hasText(userRequest.getPassword())) {
                 uEntity.setPassword(jwtUtils.passwordEncoder().encode(userRequest.getPassword()));
             }
             uEntity.setEmail(userRequest.getEmail());
@@ -119,7 +119,7 @@ public class AuthenServiceImpl implements AuthenService {
             uEntity.setEnabled(userRequest.isEnabled());
             userRepository.save(uEntity);
 
-            return new UserResponse(uEntity.getUserName(), uEntity.getEmail(), uEntity.getFullName(), uEntity.getRole());
+            return new UserResponse(uEntity.getUserName(), uEntity.getEmail(), uEntity.getFullName(), uEntity.getRole(), null);
         } else {
             throw new UsernameNotFoundException("Không tìm thấy người dùng");
         }

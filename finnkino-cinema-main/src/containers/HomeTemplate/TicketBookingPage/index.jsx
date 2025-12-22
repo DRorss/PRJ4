@@ -19,12 +19,12 @@ import "./style.scss";
 
 const TicketBookingPage = () => {
   useScrollToTop();
-  const { scheduleId } = useParams();
+  const { id } = useParams();
   const dispatch = useDispatch();
   const modalProps = useSelector((rootReducer) => rootReducer.ticketBooking.modal);
 
   useEffect(() => {
-    dispatch(actGetTicketBookingDetails(scheduleId));
+    dispatch(actGetTicketBookingDetails(id));
   }, []);
 
   return (

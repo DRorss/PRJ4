@@ -31,7 +31,7 @@ const TicketBookingCard = () => {
     (rootReducer) => rootReducer.ticketBooking,
   );
 
-  const movie = ticketBookingDetails.data?.thongTinPhim;
+  const movie = ticketBookingDetails?.data?.data?.data;
   const loading = ticketBookingDetails.loading;
 
   const renderSelectedSeats = () =>
@@ -56,8 +56,10 @@ const TicketBookingCard = () => {
 
   const handleBookTicket = () => {
     const ticket = {
-      maLichChieu: movie?.maLichChieu,
-      danhSachVe: selectedSeats?.map((seat) => ({ maGhe: seat.id, giaVe: seat.price })),
+      movieId: movie?.id,
+      totalPrice: renderPriceTotal(),
+      status: "PENDING",
+      bookingSeatsRequestList: selectedSeats?.map((seat) => ({ seatId: seat.id, seatPrice: seat.price })),
     };
 
     dispatch(actBookTicket(ticket));
@@ -74,13 +76,13 @@ const TicketBookingCard = () => {
             className="ticket-booking-card__media"
             component="img"
             alt="movie picture"
-            image={movie?.hinhAnh}
+            src={`data:image/jpeg;base64,${movie?.image}`}
           />
           {/* Card content */}
           <CardContent className="ticket-booking-card__content">
             {/* Movie name */}
             <Typography className="ticket-booking-card__movie-name" component="h2" variant="h5">
-              {movie?.tenPhim}
+              {movie?.name}
             </Typography>
             <Stack direction="row" justifyContent="between" alignItems="center" spacing={1}>
               <Box className="ticket-booking-card__movie-age-limit-label">C13</Box>
@@ -90,19 +92,19 @@ const TicketBookingCard = () => {
             </Stack>
             {/* Booking details */}
             <List>
-              <ListItem className="ticket-booking-card__booking-details">
+              {/* <ListItem className="ticket-booking-card__booking-details">
                 <ListItemText disableTypography>
                   <strong>Rạp:</strong> {movie?.tenCumRap} | {movie?.tenRap}
                 </ListItemText>
-              </ListItem>
-              <ListItem className="ticket-booking-card__booking-details">
+              </ListItem> */}
+              {/* <ListItem className="ticket-booking-card__booking-details">
                 <ListItemText disableTypography>
                   <strong>Địa chỉ:</strong> {movie?.diaChi}
                 </ListItemText>
-              </ListItem>
+              </ListItem> */}
               <ListItem className="ticket-booking-card__booking-details">
                 <ListItemText disableTypography>
-                  <strong>Ngày chiếu:</strong> {movie?.gioChieu} | {movie?.ngayChieu}
+                  <strong>Ngày chiếu:</strong> {movie?.showTime}
                 </ListItemText>
               </ListItem>
             </List>
@@ -122,7 +124,7 @@ const TicketBookingCard = () => {
               <strong style={{ color: "var(--primary)" }}>{renderPriceTotal()} VNĐ</strong>
             </Typography>
           </CardContent>
-          {/* Book ticket */}
+          {/* Book teos vaoicket */}
           <CardActions sx={{ justifyContent: "center" }}>
             <LoadingButton
               className="ticket-booking-card__btn-booking"

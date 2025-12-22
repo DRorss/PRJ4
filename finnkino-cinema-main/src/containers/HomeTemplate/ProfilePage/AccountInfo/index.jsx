@@ -46,7 +46,7 @@ const AccountInfo = () => {
   const [allowChangePassword, setAllowChangePassword] = useState(false);
   const { content: user, loading } = useSelector((rootReducer) => rootReducer.userProfile.data);
   const { loading: updateLoading } = useSelector((rootReducer) => rootReducer.userProfile.update);
-  const modalProps = useSelector((rootReducer) => rootReducer.userProfile.modal);
+  const modalProps = useSelector((rootReducer) => rootReducer.userProfile.data);
 
   const { control, handleSubmit, setValue } = useForm({
     reValidateMode: "onSubmit",
@@ -66,11 +66,9 @@ const AccountInfo = () => {
   useEffect(() => {
     if (!user) return;
 
-    setValue("username", user.taiKhoan);
-    setValue("fullName", user.hoTen);
-    setValue("email", user.email);
-    setValue("phoneNumber", user.soDT);
-    setValue("currentPasswordRef", user.matKhau);
+    setValue("username", user?.data?.data?.userName);
+    setValue("fullName", user?.data?.data?.fullName);
+    setValue("email", user?.data?.data?.email);
     setAllowChangePassword(false);
     setCurrentPassword();
   }, [user]);
@@ -143,18 +141,17 @@ const AccountInfo = () => {
       <Grid container spacing={{ xs: 0, sm: 4 }}>
         <Grid item xs={12} sm={4}>
           <InputLabel className="account-info__input-label">Email</InputLabel>
-          <Input name="email" control={control} />
+          <Input name="email" control={control} InputProps={{
+            readOnly: true,
+          }} />
         </Grid>
-        <Grid item xs={12} sm={4}>
-          <InputLabel className="account-info__input-label">Số điện thoại</InputLabel>
-          <Input name="phoneNumber" control={control} />
-        </Grid>
+
       </Grid>
-      <FormControlLabel
+      {/* <FormControlLabel
         className="account-info__checkbox-change-password"
         control={<Checkbox checked={allowChangePassword} onChange={handleAllowChangePassword} />}
         label="Đổi mật khẩu"
-      />
+      /> */}
       {allowChangePassword && (
         <>
           <Grid container spacing={4}>
@@ -226,11 +223,11 @@ const AccountInfo = () => {
         </>
       )}
       <Grid container>
-        <Grid item>
+        {/* <Grid item>
           <LoadingButton type="submit" className="account-info__btn-save" loading={updateLoading}>
             Lưu lại
           </LoadingButton>
-        </Grid>
+        </Grid> */}
       </Grid>
       <Modal actCloseModal={actCloseModal} modalProps={modalProps} />
     </Box>

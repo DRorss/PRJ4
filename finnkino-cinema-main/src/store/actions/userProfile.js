@@ -10,7 +10,7 @@ const actGetUserProfile = () => {
 
     (async () => {
       try {
-        const user = await userApi.getUser();
+        const user = await userApi.getUserAndBookings();
         dispatch(actUserProfileSuccess(user));
       } catch (error) {
         dispatch(actUserProfileFail(error));

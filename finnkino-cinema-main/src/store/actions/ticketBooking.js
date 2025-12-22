@@ -4,14 +4,13 @@ import { ticketBookingApi } from "@/api";
 /*
  * Fetch ticket booking details
  */
-const actGetTicketBookingDetails = (showtimeCode) => {
+const actGetTicketBookingDetails = (idFilm) => {
   return (dispatch) => {
     dispatch(actTicketBookingDetailsRequest());
 
     (async () => {
       try {
-        const params = { maLichChieu: showtimeCode };
-        const ticketBookingDetails = await ticketBookingApi.getTicketOfficeList(params);
+        const ticketBookingDetails = await ticketBookingApi.getTicketOfficeList(idFilm);
         dispatch(actTicketBookingDetailsSuccess(ticketBookingDetails));
       } catch (error) {
         dispatch(actTicketBookingDetailsFail(error));

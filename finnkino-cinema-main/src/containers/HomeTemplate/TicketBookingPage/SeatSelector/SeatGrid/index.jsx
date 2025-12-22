@@ -17,8 +17,7 @@ const SeatGrid = () => {
   );
 
   const dispatch = useDispatch();
-
-  const seats = ticketBookingDetails.data?.danhSachGhe;
+  const seats = ticketBookingDetails.data?.data?.data?.seatsMoviesList;
 
   if (!seats || seats.length < 1) return;
 
@@ -47,22 +46,22 @@ const SeatGrid = () => {
 
       // Get seat details
       const {
-        maGhe: seatId,
-        maRap: cinemaId,
-        loaiGhe: seatType,
-        giaVe: seatPrice,
-        daDat: sold,
-        taiKhoanNguoiDat: username,
+        seatsId: seatId,
+        type: seatType,
+        price: seatPrice,
+        booked: sold,
+        userId: username,
       } = seats[seatIdx];
 
       // Select type of seat
       let seatTypeClass = "selectable";
 
-      if (seatType === "Vip") {
-        seatTypeClass = "vip";
+      if (seatType === "V") {
+        seatTypeClass = "v";
       }
 
-      const idx = selectedSeats.findIndex((selectedSeat) => selectedSeat.id === seatId);
+      const idx = selectedSeats.findIndex((selectedSeat) =>
+        selectedSeat.id === seatId);
       if (idx !== -1) {
         seatTypeClass = "selected";
       }

@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.util.Date;
+import java.util.List;
 
 @Getter
 @Setter
@@ -26,5 +27,10 @@ public class Film {
     private Date createdAt;
     private Date updatedAt;
     private boolean enabled;
+    private String youtubeLink;
+
+    @OneToMany(mappedBy = "film",cascade = CascadeType.ALL)
+    @ToString.Exclude
+    private List<SeatsMovies> seatsMovies;
 
 }

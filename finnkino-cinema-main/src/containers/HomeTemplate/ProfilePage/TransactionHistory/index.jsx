@@ -110,7 +110,7 @@ const TransactionHistory = () => {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
 
-  const rows = content?.thongTinDatVe;
+  const rows = content?.data?.data?.bookingsRequests;
 
   const handleChangePage = (event, newPage) => setPage(newPage);
 
@@ -124,14 +124,14 @@ const TransactionHistory = () => {
       ? rows?.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
       : rows
     )?.map((row) => {
-      let seats = row?.danhSachGhe;
+      let seats = row?.bookingSeatsRequestList;
       const { tenCumRap, tenHeThongRap } = seats[0];
 
       seats = seats.map((seat, idx) => {
         // Number of seat rows in ticket booking page
         const nRow = 16;
-        const seatIndicator = ALPHABET[Math.floor((+seat.tenGhe - 1) / nRow)];
-        const seatIdx = ((+seat.tenGhe - 1) % nRow) + 1;
+        const seatIndicator = ALPHABET[Math.floor((+seat.seatId - 1) / nRow)];
+        const seatIdx = ((+seat.seatId - 1) % nRow) + 1;
         const seatCode = seatIndicator + seatIdx;
 
         const isLastSeat = idx === seats.length - 1;
@@ -145,17 +145,17 @@ const TransactionHistory = () => {
       });
 
       return (
-        <TableRow key={row.ngayDat}>
-          <TableCell align="center">{row?.maVe}</TableCell>
-          <TableCell align="center">{row?.tenPhim}</TableCell>
+        <TableRow key={row.createdAt}>
+          <TableCell align="center">{row?.id}</TableCell>
+          <TableCell align="center">{row?.movieName}</TableCell>
           <TableCell align="center">
-            {moment(row?.ngayDat).format("HH:mm")}, {moment(row?.ngayDat).format("DD/MM/YYY")}
+            {moment(row?.createdAt).format("HH:mm")}, {moment(row?.createdAt).format("DD/MM/YYY")}
           </TableCell>
-          <TableCell align="center">{row.thoiLuongPhim} phút</TableCell>
+          <TableCell align="center">{row.volumnFilm} phút</TableCell>
           <TableCell align="center">
-            {tenHeThongRap}, {tenCumRap}
+            {/* {tenHeThongRap}, {tenCumRap} */}
           </TableCell>
-          <TableCell align="center">{row.giaVe.toLocaleString()} VNĐ</TableCell>
+          <TableCell align="center">{row.totalPrice.toLocaleString()} VNĐ</TableCell>
           <TableCell align="center">{seats}</TableCell>
         </TableRow>
       );

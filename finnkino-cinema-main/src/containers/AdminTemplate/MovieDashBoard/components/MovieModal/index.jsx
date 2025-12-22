@@ -62,6 +62,7 @@ function MovieModal(props) {
     desc: "",
     showHideFilm: true,
     image: "",
+    youtubeLink: ""
   };
 
   const initialValuesEditMovie = {
@@ -73,7 +74,8 @@ function MovieModal(props) {
     volumnFilm: data?.volumnFilm,
     desc: data?.description,
     showHideFilm: data?.showHideFilm,
-    image: data?.image
+    image: data?.image,
+    youtubeLink: data?.youtubeLink
   };
 
   let movieSchema = modalType === "addMovie" ? addMovieSchema : editMovieSchema;
@@ -116,7 +118,7 @@ function MovieModal(props) {
         formData.append('desc', values.desc);
         formData.append('showHideFilm', values.showHideFilm);
         if (values.image) formData.append('image', values.image);
-
+        if (values.youtubeLink) formData.append('youtubeLink', values.youtubeLink);
         if (modalType === "addMovie") {
           fetchMovieAdd(formData);
         } else if (modalType === "editMovie") {
@@ -146,6 +148,7 @@ function MovieModal(props) {
     setFieldValue("desc", '');
     setFieldValue("showHideFilm", true);
     setFieldValue("image", '');
+    setFieldValue("youtubeLink", '');
   }
 
   const handleChangeDatePicker = (date) => {
@@ -367,6 +370,24 @@ function MovieModal(props) {
                   alt="..."
                   className="modal__img"
                 />
+              </FormControl>
+              <FormControl fullWidth className="form__input-wrapper">
+                <FormLabel className="movie-form__input-label" htmlFor="youtube-link">
+                  Youtube Link
+                </FormLabel>
+                <TextField
+                  name="youtubeLink"
+                  id="youtubeLink"
+                  variant="outlined"
+                  fullWidth
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                  value={values.youtubeLink}
+                  error={errors.youtubeLink && touched.youtubeLink ? true : false}
+                />
+                {errors.youtubeLink && touched.youtubeLink && (
+                  <FormHelperText error>{errors.youtubeLink}</FormHelperText>
+                )}
               </FormControl>
               <Box sx={{ paddingBottom: 2 }}>
                 <SubmitButton>{button}</SubmitButton>

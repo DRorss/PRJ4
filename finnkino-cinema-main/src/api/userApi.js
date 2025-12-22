@@ -4,6 +4,9 @@ const resourceAuth = "api/auth/";
 
 const resourceUser = "api/user/";
 
+const resourceUserBookings = "api/booking";
+
+
 const userApi = {
   login: async (user) => {
     const url = resourceAuth + "login";
@@ -42,6 +45,10 @@ const userApi = {
     return axiosClient.put(url);
   },
 
+  getUserAndBookings: async () => {
+    const url = resourceUserBookings;
+    return await axiosClient.get(url);
+  },
 };
 
 export default userApi;

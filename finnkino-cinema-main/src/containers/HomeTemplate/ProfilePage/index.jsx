@@ -44,7 +44,7 @@ const ProfilePage = () => {
               />
               <Tab
                 className="tab-user-profile"
-                label="2 Lịch sử thanh toán"
+                label="2 Thông tin vé đã đặt"
                 value="2"
                 disableRipple={true}
               />

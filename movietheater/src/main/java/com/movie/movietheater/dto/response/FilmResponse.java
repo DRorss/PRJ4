@@ -1,6 +1,7 @@
 package com.movie.movietheater.dto.response;
 
 import com.movie.movietheater.entity.Film;
+import com.movie.movietheater.entity.SeatsMovies;
 import io.jsonwebtoken.lang.Strings;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -13,6 +14,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Base64;
 import java.util.Date;
+import java.util.List;
 
 @Getter
 @Setter
@@ -32,13 +34,15 @@ public class FilmResponse {
     private Date createdAt;
     private Date updatedAt;
     private String image;
-
+    private List<SeatFilmResponse> seatsMoviesList;
+    private String youtubeLink;
     public FilmResponse(Film film) throws IOException {
         this.id = film.getId();
-        if(Strings.hasText(film.getImagePath())) {
+        if (Strings.hasText(film.getImagePath())) {
             Path path = Paths.get("uploads").resolve(film.getImagePath()).normalize();
             byte[] imageBytes = Files.readAllBytes(path);
-            this.image = Base64.getEncoder().encodeToString(imageBytes);;
+            this.image = Base64.getEncoder().encodeToString(imageBytes);
+            ;
         }
         this.name = film.getName();
         this.author = film.getAuthor();
@@ -51,6 +55,18 @@ public class FilmResponse {
         this.imagePath = film.getImagePath();
         this.createdAt = film.getCreatedAt();
         this.updatedAt = film.getUpdatedAt();
-
+        this.youtubeLink = film.getYoutubeLink();
+        if (!film.getSeatsMovies().isEmpty()) {
+            this.seatsMoviesList = film.getSeatsMovies().stream()
+                    .map(u -> {
+                        try {
+                            return new SeatFilmResponse(u);
+                        } catch (IOException e) {
+                            throw new RuntimeException(e);
+                        }
+                    })
+                    .toList();
+            ;
+        }
     }
 }

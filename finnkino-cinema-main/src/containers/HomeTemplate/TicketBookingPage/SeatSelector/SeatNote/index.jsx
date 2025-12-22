@@ -14,17 +14,17 @@ const seatNoteItems = [
     content: "Ghế đã bán",
   },
   {
-    type: "vip",
+    type: "v",
     content: "Ghế VIP",
   },
   {
     type: "selectable",
     content: "Có thể chọn",
   },
-  {
-    type: "unavailable",
-    content: "Không thể chọn",
-  },
+  // {
+  //   type: "unavailable",
+  //   content: "Không thể chọn",
+  // },
 ];
 
 const SeatNote = () =>

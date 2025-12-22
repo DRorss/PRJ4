@@ -1,15 +1,16 @@
 import axiosClient from "./config/axiosClient";
 
-const resourceName = "QuanLyDatVe/";
+const resourceName = "api/booking";
+const resourceNameFilm = "api/film";
 
 const ticketBookingApi = {
   bookTicket: (ticket) => {
-    const url = resourceName + "DatVe";
+    const url = resourceName;
     return axiosClient.post(url, ticket);
   },
-  getTicketOfficeList: (params) => {
-    const url = resourceName + "LayDanhSachPhongVe";
-    return axiosClient.get(url, { params });
+  getTicketOfficeList: (id) => {
+    const url = resourceNameFilm + `/getDetail/${id}`;
+    return axiosClient.get(url);
   },
   createShowtime: (showtime) => {
     const url = resourceName + "TaoLichChieu";

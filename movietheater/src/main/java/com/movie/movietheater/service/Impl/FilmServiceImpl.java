@@ -3,7 +3,11 @@ package com.movie.movietheater.service.Impl;
 import com.movie.movietheater.dto.request.FilmRequest;
 import com.movie.movietheater.dto.response.FilmResponse;
 import com.movie.movietheater.entity.Film;
+import com.movie.movietheater.entity.Seats;
+import com.movie.movietheater.entity.SeatsMovies;
 import com.movie.movietheater.repository.FilmRepository;
+import com.movie.movietheater.repository.SeatsMoviesRepository;
+import com.movie.movietheater.repository.SeatsRepository;
 import com.movie.movietheater.service.FilmService;
 import com.movie.movietheater.utils.ResultResp;
 import io.micrometer.common.util.StringUtils;
@@ -29,33 +33,58 @@ public class FilmServiceImpl implements FilmService {
     @Autowired
     FilmRepository filmRepository;
 
+    @Autowired
+    SeatsRepository seatsRepository;
+
+    @Autowired
+    SeatsMoviesRepository seatsMoviesRepository;
+
     public ResultResp save(FilmRequest request) throws IOException {
         Film film = new Film();
         film.setCreatedAt(new Date());
-        if(StringUtils.isNotEmpty(request.getId())){
-            Optional<Film> filmOp = filmRepository.findById(Long.valueOf(request.getId()));
-            film = filmOp.orElse(new Film());
-            film.setUpdatedAt(new Date());
-        }
-        film.setName(request.getName());
-        film.setAuthor(request.getAuthor());
-        film.setShowTime(request.getShowTime());
-        film.setType(request.getType());
-        film.setVolumnFilm(request.getVolumnFilm());
-        film.setDescription(request.getDesc());
-        film.setShowHideFilm(request.getShowHideFilm());
-        film.setProductionTime(request.getProductionDate());
-        film.setEnabled(true);
+        try {
+            if (StringUtils.isNotEmpty(request.getId())) {
+                Optional<Film> filmOp = filmRepository.findById(Long.valueOf(request.getId()));
+                film = filmOp.orElse(new Film());
+                film.setUpdatedAt(new Date());
+            }
+            film.setName(request.getName());
+            film.setAuthor(request.getAuthor());
+            film.setShowTime(request.getShowTime());
+            film.setType(request.getType());
+            film.setVolumnFilm(request.getVolumnFilm());
+            film.setDescription(request.getDesc());
+            film.setShowHideFilm(request.getShowHideFilm());
+            film.setProductionTime(request.getProductionDate());
+            film.setEnabled(true);
+            film.setYoutubeLink(request.getYoutubeLink());
+            if (request.getImage() != null && !request.getImage().isEmpty()) {
+                String fileName = UUID.randomUUID() + "_" + request.getImage().getOriginalFilename();
+                Path uploadPath = Paths.get(uploadDir);
+                Files.createDirectories(uploadPath);
+                request.getImage().transferTo(uploadPath.resolve(fileName));
+                film.setImagePath(uploadPath.toAbsolutePath() + "\\" + fileName);
+            }
+            filmRepository.save(film);
 
-        if (request.getImage() != null && !request.getImage().isEmpty()) {
-            String fileName = UUID.randomUUID() + "_" + request.getImage().getOriginalFilename();
-            Path uploadPath = Paths.get(uploadDir);
-            Files.createDirectories(uploadPath);
-            request.getImage().transferTo(uploadPath.resolve(fileName));
-            film.setImagePath(uploadPath.toAbsolutePath() + "\\" + fileName);
+            if (film.getId() != null) {
+                List<Seats> seats = seatsRepository.findAll();
+                List<SeatsMovies> isExist = seatsMoviesRepository.findByMovieId(film.getId());
+                if (isExist.isEmpty()) {
+                    List<SeatsMovies> smLs = new ArrayList<>();
+                    for (Seats s : seats) {
+                        SeatsMovies sm = new SeatsMovies(s.getId(), film.getId(),
+                                s.getType().equals("S") ? 35000L : 45000L, false, null);
+                        smLs.add(sm);
+                    }
+                    seatsMoviesRepository.saveAll(smLs);
+                }
+            }
+        }catch (Exception e){
+            System.out.println(e.getMessage());
+            throw e;
         }
-
-        return ResultResp.success(filmRepository.save(film));
+        return ResultResp.success(film);
     }
 
     @Override

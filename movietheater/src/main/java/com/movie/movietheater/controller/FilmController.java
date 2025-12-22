@@ -72,4 +72,12 @@ public class FilmController {
         }
     }
 
+    @GetMapping("/getSeatsMovies")
+    public ResultResp<?> getSeatsMovies(@RequestParam Integer id_film) {
+        try {
+            return ResultResp.success(filmService.getDetail(id_film));
+        } catch (Exception ex) {
+            return ResultResp.error(new ObjectError("Error", ex.getMessage()));
+        }
+    }
 }

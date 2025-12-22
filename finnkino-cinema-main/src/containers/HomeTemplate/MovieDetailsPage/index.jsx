@@ -1,7 +1,9 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useParams } from "react-router-dom";
 import moment from "moment";
+import Dialog from "@mui/material/Dialog";
+import DialogContent from "@mui/material/DialogContent";
 
 //FontAwesome
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -20,14 +22,16 @@ import "./style.scss";
 
 function MovieDetailsPage() {
   const dispatch = useDispatch();
-  const data = useSelector((state) => state.movieDetails.data);
-  const loading = useSelector((state) => state.movieDetails.loading);
 
   const movieID = useParams();
+  const [openTrailer, setOpenTrailer] = useState(false);
 
   useEffect(() => {
     dispatch(actFetchMovieDetails(movieID.id));
   }, []);
+
+  const data = useSelector((state) => state.movieDetails.data);
+  const loading = useSelector((state) => state.movieDetails.loading);
 
   const socialList = [
     {
@@ -90,6 +94,10 @@ function MovieDetailsPage() {
   const renderLoader = () => {
     if (loading) return <Loader />;
   };
+  const convertToEmbedUrl = (url) => {
+    if (!url) return "";
+    return url.replace("watch?v=", "embed/");
+  };
 
   return (
     <>
@@ -121,7 +129,8 @@ function MovieDetailsPage() {
                     size="large"
                     className="btn-wrapper btn-outline top-info__btn"
                     startIcon={<FontAwesomeIcon icon={faPlay} />}
-                    href={data.trailer}
+                    onClick={() => setOpenTrailer(true)}
+                    disabled={!data?.youtubeLink}
                   >
                     Play Trailer
                   </Button>
@@ -180,7 +189,24 @@ function MovieDetailsPage() {
               </Grid>
             </Grid>
           </Container>
-
+          <Dialog
+            open={openTrailer}
+            onClose={() => setOpenTrailer(false)}
+            maxWidth="md"
+            fullWidth
+          >
+            <DialogContent sx={{ p: 0 }}>
+              <iframe
+                width="100%"
+                height="500"
+                src={convertToEmbedUrl(data?.youtubeLink)}
+                title="Movie Trailer"
+                frameBorder="0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowFullScreen
+              />
+            </DialogContent>
+          </Dialog>
           {/* Top info for tablet + mobile screens */}
           {/* <Box className="movie-detail__top-desc container hide-on-pc">
             <Box className="movie-detail__desc-left">

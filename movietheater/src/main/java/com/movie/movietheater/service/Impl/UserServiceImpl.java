@@ -2,7 +2,9 @@ package com.movie.movietheater.service.Impl;
 
 import com.movie.movietheater.dto.request.UserRequest;
 import com.movie.movietheater.dto.response.UserResponse;
+import com.movie.movietheater.entity.Bookings;
 import com.movie.movietheater.entity.User;
+import com.movie.movietheater.repository.BookingsRepository;
 import com.movie.movietheater.repository.UserRepository;
 import com.movie.movietheater.service.UserService;
 import com.movie.movietheater.utils.JwtUtils;
@@ -13,6 +15,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -22,18 +25,16 @@ public class UserServiceImpl implements UserService {
     private UserRepository userRepository;
 
     @Autowired
+    private BookingsRepository bookingsRepository;
+
+    @Autowired
     private JwtUtils jwtUtils;
 
     public UserResponse getInfoUser(String userName) {
         Optional<User> user = userRepository.findByUserName(userName);
         if (user.isPresent()) {
-            return new UserResponse(user.get().getUserName(),
-                    user.get().getEmail(),
-                    user.get().getFullName(),
-                    user.get().getRole(),
-                    user.get().getPassword(),
-                    user.get().isEnabled()
-            );
+            User ue = user.get();
+            return new UserResponse(ue.getUserName(), ue.getEmail(), ue.getFullName(), ue.getRole());
         } else {
             throw new UsernameNotFoundException("Không tìm thấy người dùng");
         }
@@ -48,7 +49,7 @@ public class UserServiceImpl implements UserService {
             uEntity.setPassword(jwtUtils.passwordEncoder().encode(userRequest.getNewPassword()));
             userRepository.save(uEntity);
 
-            return new UserResponse(uEntity.getUserName(), uEntity.getEmail(), uEntity.getFullName(), uEntity.getRole());
+            return new UserResponse(uEntity.getUserName(), uEntity.getEmail(), uEntity.getFullName(), uEntity.getRole(), null);
         } else {
             throw new UsernameNotFoundException("Không tìm thấy người dùng");
         }
@@ -69,7 +70,7 @@ public class UserServiceImpl implements UserService {
                     user.get().getFullName(),
                     user.get().getRole(),
                     user.get().getPassword(),
-                    user.get().isEnabled()
+                    user.get().isEnabled(), null
             );
         } else {
             throw new UsernameNotFoundException("Không tìm thấy người dùng");
@@ -78,14 +79,14 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public boolean updateEnabled(Long id) {
-        try{
+        try {
             Optional<User> u = userRepository.findById(id);
-            if(u.isPresent()){
+            if (u.isPresent()) {
                 User user = u.get();
                 user.setEnabled(!user.isEnabled());
                 userRepository.save(user);
             }
-        }catch(Exception e){
+        } catch (Exception e) {
             return false;
         }
         return true;
