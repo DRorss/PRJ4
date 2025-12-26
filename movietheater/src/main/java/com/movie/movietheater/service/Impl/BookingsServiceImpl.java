@@ -3,17 +3,13 @@ package com.movie.movietheater.service.Impl;
 import com.movie.movietheater.dto.request.*;
 import com.movie.movietheater.dto.response.AuthenResponse;
 import com.movie.movietheater.dto.response.CheckValidEmailResponse;
+import com.movie.movietheater.dto.response.ReportBookingsResponse;
 import com.movie.movietheater.dto.response.UserResponse;
-import com.movie.movietheater.entity.BookingSeats;
-import com.movie.movietheater.entity.Bookings;
-import com.movie.movietheater.entity.Film;
-import com.movie.movietheater.entity.User;
-import com.movie.movietheater.repository.BookingSeatsRepository;
-import com.movie.movietheater.repository.BookingsRepository;
-import com.movie.movietheater.repository.FilmRepository;
-import com.movie.movietheater.repository.UserRepository;
+import com.movie.movietheater.entity.*;
+import com.movie.movietheater.repository.*;
 import com.movie.movietheater.service.AuthenService;
 import com.movie.movietheater.service.BookingsService;
+import com.movie.movietheater.service.MailService;
 import com.movie.movietheater.utils.CustomExceptionHandler;
 import com.movie.movietheater.utils.JwtUtils;
 import com.movie.movietheater.utils.ResultResp;
@@ -41,30 +37,48 @@ public class BookingsServiceImpl implements BookingsService {
     private BookingsRepository bookingsRepository;
 
     @Autowired
-    private BookingSeatsRepository bookingSeatsRepository;
-
-    @Autowired
     private UserRepository userRepo;
 
     @Autowired
     private FilmRepository filmRepository;
+    @Autowired
+    private SeatsMoviesRepository seatsMoviesRepository;
+    @Autowired
+    private SeatsRepository seatsRepository;
+    @Autowired
+    private MailService mailService;
 
     public Bookings booking(BookingsRequest bookingsRequest) {
         Bookings bookings = new Bookings();
         try {
-            Long id = userRepo.findByUserName(bookingsRequest.getUserName()).get().getId();
-            bookings = new Bookings(id, bookingsRequest.getStatus(), bookingsRequest.getTotalPrice(),
+            User u = userRepo.findByUserName(bookingsRequest.getUserName()).get();
+            bookings = new Bookings(u.getId(), bookingsRequest.getStatus(), bookingsRequest.getTotalPrice(),
                     new Date(), Long.valueOf(bookingsRequest.getMovieId()));
             bookingsRepository.save(bookings);
+            Film film = null;
+            List<SeatsMovies> bookingSeatsList = null;
             if (bookings.getId() != null) {
-                List<BookingSeats> bookingSeatsList = new ArrayList<>();
+                bookingSeatsList = new ArrayList<>();
                 for (BookingSeatsRequest bookingSeatsRequest : bookingsRequest.getBookingSeatsRequestList()) {
-                    bookingSeatsList.add(new BookingSeats(Long.valueOf(bookingSeatsRequest.getSeatId()),
-                            bookingSeatsRequest.getSeatPrice(), bookings));
+                    SeatsMovies sm = seatsMoviesRepository.findBySeatsIdAndMovieId(Long.valueOf(bookingSeatsRequest.getSeatId()),
+                            bookings.getMovieId());
+                    sm.setBooked(true);
+                    sm.setUserId(u.getId());
+                    sm.setBookingId(bookings.getId());
+                    if(film == null){
+                        film = filmRepository.findById(sm.getMovieId()).get();
+                    }
+
+                    bookingSeatsList.add(sm);
                 }
-                bookingSeatsRepository.saveAll(bookingSeatsList);
+                seatsMoviesRepository.saveAll(bookingSeatsList);
             }
+
+            mailService.sendBookingSuccessMail(u.getEmail(), u.getFullName(),
+                    String.valueOf(bookings.getId()), film.getName(),
+                    film.getShowTime(), String.valueOf(bookings.getTotalPrice()));
         } catch (Exception ex) {
+            System.out.println(ex);
             throw new RuntimeException();
         }
         return bookings;
@@ -79,9 +93,10 @@ public class BookingsServiceImpl implements BookingsService {
             if (bookingsList != null && bookingsList.size() > 0) {
                 for (int i = 0; i < bookingsList.size(); i++) {
                     Bookings bookings = bookingsList.get(i);
-                    BookingsRequest bookingsRequest = new BookingsRequest(bookings);
+                    List<SeatsMovies> seatsMovies = seatsMoviesRepository.findByMovieIdAndBookingId(bookings.getMovieId(), bookings.getId());
+                    BookingsRequest bookingsRequest = new BookingsRequest(bookings, seatsMovies);
                     Optional<Film> fop = filmRepository.findById(bookingsList.get(0).getMovieId());
-                    if(fop.isPresent()){
+                    if (fop.isPresent()) {
                         FilmRequest fr = new FilmRequest(fop.get());
                         bookingsRequest.setMovieName(fr.getName());
                         bookingsRequest.setVolumnFilm(String.valueOf(fr.getVolumnFilm()));
@@ -100,4 +115,10 @@ public class BookingsServiceImpl implements BookingsService {
             throw new UsernameNotFoundException("Không tìm thấy người dùng");
         }
     }
+
+    public List<ReportBookingsResponse> reportBookings() {
+        return bookingsRepository.sumPricesByMovie();
+    }
+
+
 }

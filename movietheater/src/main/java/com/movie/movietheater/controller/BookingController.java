@@ -18,9 +18,11 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/api/booking")
 public class BookingController {
-
     @Autowired
     public BookingsService bookingsService;
+
+    @Autowired
+    public UserService userService;
 
     @PostMapping()
     public ResultResp<BookingsRequest> bookings(@AuthenticationPrincipal UserDetails userDetails, @RequestBody BookingsRequest bookingsRequest) {
@@ -32,13 +34,19 @@ public class BookingController {
         }
     }
 
-    @Autowired
-    public UserService userService;
-
     @GetMapping
-    public ResultResp<UserResponse> getInfoUser(@AuthenticationPrincipal UserDetails userDetails) {
+    public ResultResp<UserResponse> bookings(@AuthenticationPrincipal UserDetails userDetails) {
         try {
             return ResultResp.success(bookingsService.getInfoUser(userDetails.getUsername()));
+        } catch (Exception ex) {
+            return ResultResp.error(new ObjectError("Error", ex.getMessage()));
+        }
+    }
+
+    @GetMapping("/report-bookings")
+    public ResultResp<UserResponse> reportBookings() {
+        try {
+            return ResultResp.success(bookingsService.reportBookings());
         } catch (Exception ex) {
             return ResultResp.error(new ObjectError("Error", ex.getMessage()));
         }

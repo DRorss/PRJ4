@@ -90,12 +90,7 @@ const columns = [
   { id: "movie-name", label: "Tên phim", align: "center", minWidth: 100 },
   { id: "showtime", label: "Ngày chiếu", align: "center", minWidth: 170 },
   { id: "movie-duration", label: "Thời lượng", align: "center", minWidth: 120 },
-  {
-    id: "cinema",
-    label: "Rạp",
-    align: "center",
-    minWidth: 100,
-  },
+
   { id: "ticket-cost", label: "Giá vé", align: "center", minWidth: 120 },
   {
     id: "selected-seats",
@@ -152,10 +147,7 @@ const TransactionHistory = () => {
             {moment(row?.createdAt).format("HH:mm")}, {moment(row?.createdAt).format("DD/MM/YYY")}
           </TableCell>
           <TableCell align="center">{row.volumnFilm} phút</TableCell>
-          <TableCell align="center">
-            {/* {tenHeThongRap}, {tenCumRap} */}
-          </TableCell>
-          <TableCell align="center">{row.totalPrice.toLocaleString()} VNĐ</TableCell>
+          <TableCell align="center">{row.totalPrice} VNĐ</TableCell>
           <TableCell align="center">{seats}</TableCell>
         </TableRow>
       );

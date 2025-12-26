@@ -7,6 +7,7 @@ import com.movie.movietheater.dto.response.AuthenResponse;
 import com.movie.movietheater.dto.response.CheckValidEmailResponse;
 import com.movie.movietheater.dto.response.UserResponse;
 import com.movie.movietheater.entity.User;
+import com.movie.movietheater.repository.SeatsMoviesRepository;
 import com.movie.movietheater.repository.UserRepository;
 import com.movie.movietheater.service.AuthenService;
 import com.movie.movietheater.utils.CustomExceptionHandler;
@@ -29,6 +30,7 @@ public class AuthenServiceImpl implements AuthenService {
 
     @Autowired
     private AuthenticationManager authenticationManager;
+
 
     @Autowired
     private JwtUtils jwtUtils;

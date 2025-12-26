@@ -13,6 +13,6 @@ import java.util.Date;
 @AllArgsConstructor
 public class BookingSeatsRequest {
     private String seatId;
-    private BigDecimal seatPrice;
+    private double seatPrice;
 
 }

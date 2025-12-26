@@ -27,11 +27,11 @@ public class SeatFilmResponse {
     private String type;
 
     public SeatFilmResponse(SeatsMovies sm) throws IOException {
-        this.seatsId = sm.getSeats_id();
+        this.seatsId = sm.getSeatsId();
         this.movieId = sm.getMovieId();
         this.isBooked = sm.isBooked();
-        this.userId = sm.getUser_id();
+        this.userId = sm.getUserId();
         this.price = sm.getPrice();
-        this.type = sm.getSeats().getType();
+//        this.type = sm.getSeats().getType();
     }
 }

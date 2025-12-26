@@ -15,6 +15,11 @@ const items = [
     label: "Quản lý phim",
     path: "movie-management",
   },
+  {
+    Icon: LocalMovies,
+    label: "Báo cáo doanh thu phim",
+    path: "report-management",
+  },
 ];
 
 const DrawerItems = () => {

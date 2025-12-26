@@ -57,7 +57,7 @@ const TicketBookingCard = () => {
   const handleBookTicket = () => {
     const ticket = {
       movieId: movie?.id,
-      totalPrice: renderPriceTotal(),
+      totalPrice: renderPriceTotal().replaceAll(".", ""),
       status: "PENDING",
       bookingSeatsRequestList: selectedSeats?.map((seat) => ({ seatId: seat.id, seatPrice: seat.price })),
     };

@@ -16,6 +16,10 @@ const ticketBookingApi = {
     const url = resourceName + "TaoLichChieu";
     return axiosClient.post(url, showtime);
   },
+  reportBookings: () => {
+    const url = resourceName + "/report-bookings";
+    return axiosClient.get(url);
+  },
 };
 
 export default ticketBookingApi;

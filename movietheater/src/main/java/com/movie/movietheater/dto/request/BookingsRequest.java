@@ -1,6 +1,7 @@
 package com.movie.movietheater.dto.request;
 
 import com.movie.movietheater.entity.Bookings;
+import com.movie.movietheater.entity.SeatsMovies;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
@@ -22,7 +23,7 @@ public class BookingsRequest {
     private String volumnFilm;
     private String userName;
     private String status;
-    private BigDecimal totalPrice;
+    private Long totalPrice;
     private Date createdAt;
     private String youtubeLink;
     private List<BookingSeatsRequest> bookingSeatsRequestList;
@@ -30,7 +31,7 @@ public class BookingsRequest {
     public BookingsRequest() {
     }
 
-    public BookingsRequest(Bookings bookings) {
+    public BookingsRequest(Bookings bookings, List<SeatsMovies> seatsMovies) {
         this.id = String.valueOf(bookings.getId());
         this.userId = String.valueOf(bookings.getUserId());
         this.movieId = String.valueOf(bookings.getMovieId());
@@ -38,12 +39,12 @@ public class BookingsRequest {
         this.status = bookings.getStatus();
         this.totalPrice = bookings.getTotalPrice();
         this.createdAt = bookings.getCreatedAt();
-        if (bookings.getSeats() != null && bookings.getSeats().size() > 0) {
+        if (seatsMovies != null && seatsMovies.size() > 0) {
             List<BookingSeatsRequest> bookingSeatsRequestList = new ArrayList<>();
-            for (int i = 0; i < bookings.getSeats().size(); i++) {
+            for (int i = 0; i < seatsMovies.size(); i++) {
                 bookingSeatsRequestList.add(new BookingSeatsRequest(
-                        String.valueOf(bookings.getSeats().get(i).getSeatId()),
-                        bookings.getSeats().get(i).getSeatPrice())
+                        String.valueOf(seatsMovies.get(i).getSeatsId()),
+                        seatsMovies.get(i).getPrice())
                 );
             }
             this.bookingSeatsRequestList = bookingSeatsRequestList;

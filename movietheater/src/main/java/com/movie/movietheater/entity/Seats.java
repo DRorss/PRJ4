@@ -20,9 +20,4 @@ public class Seats {
     private int seatNumber;
     private String seatRow;
     private String type;
-
-    @OneToMany(mappedBy = "seats",cascade = CascadeType.ALL)
-    @ToString.Exclude
-    private List<SeatsMovies> seatsMovies;
-
 }

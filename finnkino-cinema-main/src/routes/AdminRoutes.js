@@ -10,6 +10,7 @@ import { ROLE } from "@/constants";
 // Pages
 const AdminTemplate = lazy(() => import("@/containers/AdminTemplate"));
 const MovieDashboard = lazy(() => import("@/containers/AdminTemplate/MovieDashBoard"));
+const ReportDashboard = lazy(() => import("@/containers/AdminTemplate/ReportDashBoard"));
 const UserDashboard = lazy(() => import("@/containers/AdminTemplate/UserDashBoard"));
 const user = sessionStorage.getItem("infoUser") && JSON.parse(sessionStorage.getItem("infoUser"));
 
@@ -24,6 +25,7 @@ const AdminRoutes = {
     { path: "", element: <Navigate to="user-management" /> },
     { path: "user-management", element: <UserDashboard /> },
     { path: "movie-management", element: <MovieDashboard /> },
+    { path: "report-management", element: <ReportDashboard /> },
   ],
 };
 

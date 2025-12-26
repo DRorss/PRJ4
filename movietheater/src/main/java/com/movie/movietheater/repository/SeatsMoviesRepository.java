@@ -15,4 +15,11 @@ public interface SeatsMoviesRepository extends JpaRepository<SeatsMovies, Long> 
 
     List<SeatsMovies> findByMovieId(@Param("movieId") Long movie_id);
 
+    List<SeatsMovies> findByMovieIdAndBookingId(@Param("movieId") Long movie_id, @Param("bookingId") Long bookingId);
+
+    SeatsMovies findBySeatsId(@Param("seatsId") Long seats_id);
+
+
+    SeatsMovies findBySeatsIdAndMovieId(@Param("seatsId") Long seats_id, @Param("movieId") Long movie_id);
+
 }

@@ -36,7 +36,8 @@ public class FilmResponse {
     private String image;
     private List<SeatFilmResponse> seatsMoviesList;
     private String youtubeLink;
-    public FilmResponse(Film film) throws IOException {
+
+    public FilmResponse(Film film, List<SeatsMovies> seatsMovies) throws IOException {
         this.id = film.getId();
         if (Strings.hasText(film.getImagePath())) {
             Path path = Paths.get("uploads").resolve(film.getImagePath()).normalize();
@@ -56,8 +57,8 @@ public class FilmResponse {
         this.createdAt = film.getCreatedAt();
         this.updatedAt = film.getUpdatedAt();
         this.youtubeLink = film.getYoutubeLink();
-        if (!film.getSeatsMovies().isEmpty()) {
-            this.seatsMoviesList = film.getSeatsMovies().stream()
+        if (!seatsMovies.isEmpty()) {
+            this.seatsMoviesList = seatsMovies.stream()
                     .map(u -> {
                         try {
                             return new SeatFilmResponse(u);

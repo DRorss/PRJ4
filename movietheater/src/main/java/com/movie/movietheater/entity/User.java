@@ -1,9 +1,13 @@
 package com.movie.movietheater.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "user")
@@ -21,4 +25,5 @@ public class User {
     private String fullName;
     private boolean enabled;
     private String role;
+
 }

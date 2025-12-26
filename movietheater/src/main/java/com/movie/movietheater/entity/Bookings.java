@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import lombok.*;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -31,16 +32,12 @@ public class Bookings {
     private String status;       // PENDING / PAID / CANCELLED
 
     @Column(name = "total_price", nullable = false)
-    private BigDecimal totalPrice;
+    private Long totalPrice;
 
     @Column(name = "created_at", nullable = false)
     private Date createdAt;
 
-    // 1 booking có nhiều booking_seats
-    @OneToMany(mappedBy = "booking", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<BookingSeats> seats;
-
-    public Bookings(Long userId, String status, BigDecimal totalPrice, Date createdAt, Long movieId) {
+    public Bookings(Long userId, String status, Long totalPrice, Date createdAt, Long movieId) {
         this.userId = userId;
         this.status = status;
         this.totalPrice = totalPrice;

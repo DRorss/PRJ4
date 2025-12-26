@@ -1,8 +1,10 @@
 package com.movie.movietheater.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -28,9 +30,5 @@ public class Film {
     private Date updatedAt;
     private boolean enabled;
     private String youtubeLink;
-
-    @OneToMany(mappedBy = "film",cascade = CascadeType.ALL)
-    @ToString.Exclude
-    private List<SeatsMovies> seatsMovies;
 
 }
